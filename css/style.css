@@ -62,6 +62,10 @@ body {
     border: 1px solid #fef6e4;
 }
 
+.wrap-select select option{
+    color: #001858;
+}
+
 /* arrow */
 .wrap-select::before {
     content: '';

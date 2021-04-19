@@ -119,19 +119,34 @@ const select = document.querySelector("#type")
 
 // ANDIAMO ADESSO A CAMBIARE IL COLORE PER TYPE
 const colorIconsType = colorIcons(icons, colors);
+
 //TRAMITE LA FUNZIONE printICons VADO A INIETTARE GLI OGGETTI NELL HTML
 printIcons(colorIconsType, container);
+
 //ANDIAMO AD AGGIUNGERE DELLE OPTION ALLA SELECT
 const type = typeUnivoco(icons);
-addOption(type, select)
+addOption(type, select);
 
-/** 
+// ANDIMAO A VISUALIZZARE I TYPE SECONDO LA SELEZIONE NEL SELECT
+select.addEventListener("change", () => {
+    const selected = select.value;
+    const iconsFiltered = iconFiltered(colorIconsType, selected);
+    printIcons(iconsFiltered, container);
+})
+
+
+
+
+
+
+
+/**********************************
 * UTILITIES FUNCTION
-*/
+***********************************/
 
-/** 
+/*************************************
 * FUNCTION PER INSERIRE GLI OGGETTI ICONS NELL HTML
-*/
+***************************************/
 function printIcons(icons, container, ){
     let html = ""; 
 
@@ -148,9 +163,9 @@ function printIcons(icons, container, ){
     container.innerHTML = html;
 }
 
-/**
+/**************************************************
 * FUNCTION PER CAMBIARE COLORE ALLE ICONE BY TYPE
-*/
+*****************************************************/
 
 function colorIcons(icons, colors){
     const type = typeUnivoco(icons);
@@ -161,16 +176,15 @@ function colorIcons(icons, colors){
         
         return {
             ...icon,
-            color: colors[indexType], // QUESTO COLOR ADESSO è POSSIBILE ANDARE AD AGGIUNGERLO ALLO STYLE CHE
-                                     //AVEVAMO PRIMA NELLA FUNZIONE printIcons.
+            color: colors[indexType], // QUESTO COLOR ADESSO è POSSIBILE ANDARE AD AGGIUNGERLO ALLO STYLE DATO ALL i CHE AVEVAMO PRIMA NELLA FUNZIONE printIcons.
         }
     }); 
     return coloreIcon
 };
 
-/**
+/****************************************************************
 * FUNCTION PER CAPIRE QUANTI TYPE DIVERSI ABBIAMO NEL NOSTRO ARRAY
-*/
+******************************************************************/
 
 function typeUnivoco(icons){
     const type = [];
@@ -184,11 +198,33 @@ function typeUnivoco(icons){
     return type;
 }
 
-/** 
+/****************************************
 * FUNCTION PER AGGIUNGERE OPTION A SELECT
-*/
+*****************************************/
 
 function addOption(type, select){
-    let option = "";
+    let options = "";
 
+    type.forEach((icon) => {
+        options += `<option value="${icon}">${icon}</option>`
+    });
+
+    select.innerHTML += options;
+}
+
+/****************************************
+* FUNCTION PER FILTRARE LE ICON
+*****************************************/
+
+function iconFiltered(colorIconsType, selected){
+
+    if(selected === "all"){
+        return colorIconsType;
+    };
+
+    const filtered = colorIconsType.filter((icon) => {
+        return icon.type === selected;
+    });
+
+    return filtered
 }
